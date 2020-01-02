@@ -1,0 +1,19 @@
+{
+    "name": "gupalo/dateutils",
+    "description": "DateTime management",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CultOfNull\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CultOfNull\\Tests\\": "tests/"
+        }
+    }
+}
