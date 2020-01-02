@@ -1,6 +1,6 @@
 <?php
 
-namespace CultOfNull;
+namespace Gupalo;
 
 use DateInterval;
 use DatePeriod;
@@ -112,6 +112,19 @@ class DateUtils
 
         try {
             $date->sub(new DateInterval(sprintf('PT%sH', $countHours)));
+        } catch (Throwable $e) {
+            $date->setTimestamp($date->getTimestamp() - $countHours * 60);
+        }
+
+        return $date;
+    }
+
+    public static function addHours(int $countHours, DateTime $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        try {
+            $date->add(new DateInterval(sprintf('PT%sH', $countHours)));
         } catch (Throwable $e) {
             $date->setTimestamp($date->getTimestamp() - $countHours * 60);
         }

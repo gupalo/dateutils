@@ -8,12 +8,12 @@
     },
     "autoload": {
         "psr-4": {
-            "CultOfNull\\": "src/"
+            "Gupalo\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CultOfNull\\Tests\\": "tests/"
+            "Gupalo\\Tests\\": "tests/"
         }
     }
 }
