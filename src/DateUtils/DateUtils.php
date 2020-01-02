@@ -1,6 +1,6 @@
 <?php
 
-namespace Gupalo;
+namespace Gupalo\DateUtils;
 
 use DateInterval;
 use DatePeriod;

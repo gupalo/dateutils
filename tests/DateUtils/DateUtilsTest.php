@@ -1,8 +1,8 @@
 <?php
 
-namespace Gupalo\Tests;
+namespace Gupalo\Tests\DateUtils;
 
-use Gupalo\DateUtils;
+use Gupalo\DateUtils\DateUtils;
 use PHPUnit\Framework\TestCase;
 
 class DateUtilsTest extends TestCase

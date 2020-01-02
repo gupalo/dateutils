@@ -8,12 +8,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Gupalo\\": "src/"
+            "Gupalo\\DateUtils\\": "src/DateUtils/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Gupalo\\Tests\\": "tests/"
+            "Gupalo\\Tests\\DateUtils\\": "tests/DateUtils/"
         }
     }
 }
