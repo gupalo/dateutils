@@ -82,6 +82,18 @@ class DateUtilsTest extends TestCase
         $this->assertSame(time() - 20 * 60, $date->getTimestamp());
     }
 
+    public function testAddDays(): void
+    {
+        $date = DateUtils::addDays(2);
+        $this->assertSame(time() + 2 * 86400, $date->getTimestamp());
+    }
+
+    public function testSubDays(): void
+    {
+        $date = DateUtils::subDays(2);
+        $this->assertSame(time() - 2 * 86400, $date->getTimestamp());
+    }
+
     public function testAddMinutes(): void
     {
         $date = DateUtils::addMinutes(20);

@@ -93,6 +93,19 @@ class DateUtils
         return self::create();
     }
 
+    public static function addDays(int $countDays, DateTimeInterface $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        try {
+            $date->add(new DateInterval(sprintf('P%sD', $countDays)));
+        } catch (Throwable $e) {
+            $date->setTimestamp($date->getTimestamp() + $countDays * 86400);
+        }
+
+        return $date;
+    }
+
     public static function subDays(int $countDays, DateTime $date = null): DateTime
     {
         $date = self::create($date);
