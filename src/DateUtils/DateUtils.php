@@ -36,17 +36,44 @@ class DateUtils
         return $result;
     }
 
-    public static function dayBegin(DateTimeInterface $date): DateTime
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @param string $format
+     * @return string
+     */
+    public static function format($date = null, string $format = self::FORMAT_FULL): string
     {
-        $result = self::fromInterface($date);
+        return self::create($date)->format($format);
+    }
+
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @return string
+     */
+    public static function formatShort($date = null): string
+    {
+        return self::create($date)->format(self::FORMAT_SHORT);
+    }
+
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function dayBegin($date = null): DateTime
+    {
+        $result = self::create($date);
         $result->setTime(0, 0);
 
         return $result;
     }
 
-    public static function dayEnd(DateTimeInterface $date): DateTime
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function dayEnd($date = null): DateTime
     {
-        $result = self::fromInterface($date);
+        $result = self::create($date);
         $result->setTime(23, 59, 59);
 
         return $result;
@@ -72,8 +99,12 @@ class DateUtils
         return $result;
     }
 
-    public static function dailyPeriodTemplate(DateTimeInterface $minDate, DateTimeInterface $maxDate, $template, $format = 'Y-m-d'): array
-    {
+    public static function dailyPeriodTemplate(
+        DateTimeInterface $minDate,
+        DateTimeInterface $maxDate,
+        $template,
+        $format = self::FORMAT_SHORT
+    ): array {
         $result = [];
 
         $dates = self::dailyPeriod($minDate, $maxDate);
@@ -93,7 +124,12 @@ class DateUtils
         return self::create();
     }
 
-    public static function addDays(int $countDays, DateTimeInterface $date = null): DateTime
+    /**
+     * @param int $countDays
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function addDays(int $countDays, $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -106,7 +142,12 @@ class DateUtils
         return $date;
     }
 
-    public static function subDays(int $countDays, DateTime $date = null): DateTime
+    /**
+     * @param int $countDays
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function subDays(int $countDays, $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -119,20 +160,12 @@ class DateUtils
         return $date;
     }
 
-    public static function subHours(int $countHours, DateTime $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        try {
-            $date->sub(new DateInterval(sprintf('PT%sH', $countHours)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countHours * 60);
-        }
-
-        return $date;
-    }
-
-    public static function addHours(int $countHours, DateTime $date = null): DateTime
+    /**
+     * @param int $countHours
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function addHours(int $countHours, $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -145,20 +178,30 @@ class DateUtils
         return $date;
     }
 
-    public static function subMinutes(int $countMintutes, DateTime $date = null): DateTime
+    /**
+     * @param int $countHours
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function subHours(int $countHours, $date = null): DateTime
     {
         $date = self::create($date);
 
         try {
-            $date->sub(new DateInterval(sprintf('PT%sM', $countMintutes)));
+            $date->sub(new DateInterval(sprintf('PT%sH', $countHours)));
         } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countMintutes * 60);
+            $date->setTimestamp($date->getTimestamp() - $countHours * 60);
         }
 
         return $date;
     }
 
-    public static function addMinutes(int $countMintutes, DateTime $date = null): DateTime
+    /**
+     * @param int $countMintutes
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function addMinutes(int $countMintutes, $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -171,7 +214,29 @@ class DateUtils
         return $date;
     }
 
-    public static function hourBegin(DateTime $date = null): DateTime
+    /**
+     * @param int $countMintutes
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function subMinutes(int $countMintutes, $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        try {
+            $date->sub(new DateInterval(sprintf('PT%sM', $countMintutes)));
+        } catch (Throwable $e) {
+            $date->setTimestamp($date->getTimestamp() - $countMintutes * 60);
+        }
+
+        return $date;
+    }
+
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @return DateTime
+     */
+    public static function hourBegin($date = null): DateTime
     {
         $date = self::create($date);
 
@@ -180,39 +245,46 @@ class DateUtils
 
     public static function today(): DateTime
     {
-        return self::dayBegin(self::now());
+        return self::dayBegin();
     }
 
-    private static function fromInterface(DateTimeInterface $date = null): DateTime
-    {
-        if ($date === null) {
-            $result = self::now();
-        } elseif ($date instanceof DateTime) {
-            $result = clone $date;
-        } else {
-            $result = self::create()->setTimestamp($date->getTimestamp());
-        }
-
-        return $result;
-    }
-
-    public static function percentHourPassed(DateTime $date = null)
+    /**
+     * @param string|DateTimeInterface|null $date
+     * @return float
+     */
+    public static function percentHourPassed($date = null)
     {
         $date = self::create($date);
 
         return (float)(60 * (int)$date->format('i') + (int)$date->format('s')) / 3600;
     }
 
-    public static function diffCalendarMonths(DateTimeInterface $date1, DateTimeInterface $date2): int
+    /**
+     * @param string|DateTimeInterface|null $date1
+     * @param string|DateTimeInterface|null $date2
+     * @return int
+     */
+    public static function diffCalendarMonths($date1, $date2): int
     {
+        $date1 = self::create($date1);
+        $date2 = self::create($date2);
+
         $years = (int)$date1->format('Y') - (int)$date2->format('Y');
         $months = (int)$date1->format('m') - (int)$date2->format('m');
 
         return $years * 12 + $months;
     }
 
-    public static function diffCalendarWeeks(DateTimeInterface $date1, DateTimeInterface $date2)
+    /**
+     * @param string|DateTimeInterface|null $date1
+     * @param string|DateTimeInterface|null $date2
+     * @return int
+     */
+    public static function diffCalendarWeeks($date1, $date2)
     {
+        $date1 = self::create($date1);
+        $date2 = self::create($date2);
+
         $weekDay1 = (int)$date1->format('N') - 1;
         $weekDay2 = (int)$date2->format('N') - 1;
         $days = $date1->diff($date2)->days;

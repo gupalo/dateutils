@@ -15,6 +15,17 @@ class DateUtilsTest extends TestCase
         $this->assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::create('2019-10-17 12:34:56')->getTimestamp());
     }
 
+    public function testFormat(): void
+    {
+        $this->assertSame(date('Y-m-d H:i:s'), DateUtils::format());
+
+    }
+
+    public function testFormatFull(): void
+    {
+        $this->assertSame(date('Y-m-d'), DateUtils::formatShort());
+    }
+
     public function testNow(): void
     {
         $date = DateUtils::now();
@@ -153,13 +164,9 @@ class DateUtilsTest extends TestCase
         $this->assertSame(52, DateUtils::diffCalendarWeeks(DateUtils::create('2019-10-15'), DateUtils::create('2018-10-15')));
     }
 
-    public function testFormatShort(): void
+    public function testFormatConstant(): void
     {
         $this->assertSame(date('Y-m-d'), DateUtils::now()->format(DateUtils::FORMAT_SHORT));
-    }
-
-    public function testFormatFull(): void
-    {
         $this->assertSame(date('Y-m-d H:i:s'), DateUtils::now()->format(DateUtils::FORMAT_FULL));
     }
 }
