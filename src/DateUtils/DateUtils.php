@@ -14,7 +14,7 @@ class DateUtils
     public const FORMAT_FULL = 'Y-m-d H:i:s';
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function create($date = 'now'): DateTime
@@ -26,6 +26,8 @@ class DateUtils
                 $result = clone $date;
             } elseif ($date instanceof DateTimeInterface) {
                 $result = (new DateTime())->setTimestamp($date->getTimestamp());
+            } elseif (is_int($date)) {
+                $result = (new DateTime())->setTimestamp($date);
             } else {
                 $result = new DateTime($date);
             }
@@ -37,7 +39,7 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @param string $format
      * @return string
      */
@@ -47,7 +49,7 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return string
      */
     public static function formatShort($date = null): string
@@ -56,7 +58,7 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function dayBegin($date = null): DateTime
@@ -68,7 +70,7 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function dayEnd($date = null): DateTime
@@ -126,7 +128,7 @@ class DateUtils
 
     /**
      * @param int $countDays
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function addDays(int $countDays, $date = null): DateTime
@@ -144,7 +146,7 @@ class DateUtils
 
     /**
      * @param int $countDays
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function subDays(int $countDays, $date = null): DateTime
@@ -162,7 +164,7 @@ class DateUtils
 
     /**
      * @param int $countHours
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function addHours(int $countHours, $date = null): DateTime
@@ -180,7 +182,7 @@ class DateUtils
 
     /**
      * @param int $countHours
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function subHours(int $countHours, $date = null): DateTime
@@ -198,7 +200,7 @@ class DateUtils
 
     /**
      * @param int $countMintutes
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function addMinutes(int $countMintutes, $date = null): DateTime
@@ -216,7 +218,7 @@ class DateUtils
 
     /**
      * @param int $countMintutes
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function subMinutes(int $countMintutes, $date = null): DateTime
@@ -233,7 +235,34 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTimeInterface
+     */
+    public static function weekBegin($date = null): DateTimeInterface
+    {
+        return self::dayBegin(strtotime('monday this week', self::dayBegin($date)->getTimestamp()));
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTimeInterface
+     */
+    public static function weekEnd($date = null): DateTimeInterface
+    {
+        return self::dayEnd(strtotime('sunday this week', self::dayBegin($date)->getTimestamp()));
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTimeInterface
+     */
+    public static function nextMonday($date = null): DateTimeInterface
+    {
+        return self::dayBegin(strtotime('next monday', self::dayBegin($date)->getTimestamp()));
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function hourBegin($date = null): DateTime
@@ -249,7 +278,7 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date
+     * @param string|DateTimeInterface|int|null $date
      * @return float
      */
     public static function percentHourPassed($date = null)
@@ -260,8 +289,8 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date1
-     * @param string|DateTimeInterface|null $date2
+     * @param string|DateTimeInterface|int|null $date1
+     * @param string|DateTimeInterface|int|null $date2
      * @return int
      */
     public static function diffCalendarMonths($date1, $date2): int
@@ -276,8 +305,8 @@ class DateUtils
     }
 
     /**
-     * @param string|DateTimeInterface|null $date1
-     * @param string|DateTimeInterface|null $date2
+     * @param string|DateTimeInterface|int|null $date1
+     * @param string|DateTimeInterface|int|null $date2
      * @return int
      */
     public static function diffCalendarWeeks($date1, $date2)

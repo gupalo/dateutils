@@ -105,12 +105,6 @@ class DateUtilsTest extends TestCase
         $this->assertSame(time() - 2 * 86400, $date->getTimestamp());
     }
 
-    public function testAddMinutes(): void
-    {
-        $date = DateUtils::addMinutes(20);
-        $this->assertSame(time() + 20 * 60, $date->getTimestamp());
-    }
-
     public function testSubHours(): void
     {
         $date = DateUtils::subHours(2);
@@ -121,6 +115,36 @@ class DateUtilsTest extends TestCase
     {
         $date = DateUtils::addHours(2);
         $this->assertSame(time() + 2 * 3600, $date->getTimestamp());
+    }
+
+    public function testAddMinutes(): void
+    {
+        $date = DateUtils::addMinutes(20);
+        $this->assertSame(time() + 20 * 60, $date->getTimestamp());
+    }
+
+    public function testSubMinutes(): void
+    {
+        $date = DateUtils::subMinutes(20);
+        $this->assertSame(time() - 20 * 60, $date->getTimestamp());
+    }
+
+    public function testWeekBegin(): void
+    {
+        $date = DateUtils::weekBegin('2020-04-16 12:34:56');
+        $this->assertSame('2020-04-13 00:00:00', DateUtils::format($date));
+    }
+
+    public function testWeekEnd(): void
+    {
+        $date = DateUtils::weekEnd('2020-04-16 12:34:56');
+        $this->assertSame('2020-04-19 23:59:59', DateUtils::format($date));
+    }
+
+    public function testNextMonday(): void
+    {
+        $date = DateUtils::nextMonday('2020-04-16 12:34:56');
+        $this->assertSame('2020-04-20 00:00:00', DateUtils::format($date));
     }
 
     public function testHourBegin(): void
