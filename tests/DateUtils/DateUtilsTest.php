@@ -168,7 +168,7 @@ class DateUtilsTest extends TestCase
         $this->assertSame(0.75, DateUtils::percentHourPassed($date));
     }
 
-    public function testDiffCalendarDays(): void
+    public function testDiffDays(): void
     {
         $this->assertSame(6, DateUtils::diffDays(DateUtils::create('2019-10-27'), DateUtils::create('2019-10-21')));
         $this->assertSame(-6, DateUtils::diffDays(DateUtils::create('2019-10-21'), DateUtils::create('2019-10-27')));
