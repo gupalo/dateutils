@@ -188,6 +188,13 @@ class DateUtilsTest extends TestCase
         $this->assertSame(52, DateUtils::diffCalendarWeeks(DateUtils::create('2019-10-15'), DateUtils::create('2018-10-15')));
     }
 
+    public function testDiffCalendarDays(): void
+    {
+        $this->assertSame(6, DateUtils::diffDays(DateUtils::create('2019-10-27'), DateUtils::create('2019-10-21')));
+        $this->assertSame(-6, DateUtils::diffDays(DateUtils::create('2019-10-21'), DateUtils::create('2019-10-27')));
+        $this->assertSame(0, DateUtils::diffDays(DateUtils::create('2019-10-21'), DateUtils::create('2019-10-21')));
+    }
+
     public function testFormatConstant(): void
     {
         $this->assertSame(date('Y-m-d'), DateUtils::now()->format(DateUtils::FORMAT_SHORT));

@@ -288,6 +288,16 @@ class DateUtils
         return (float)(60 * (int)$date->format('i') + (int)$date->format('s')) / 3600;
     }
 
+    public static function diffDays($date1, $date2): int
+    {
+        $date1 = self::create($date1);
+        $date2 = self::create($date2);
+
+        $diff = $date1->diff($date2);
+
+        return ($diff->invert ? 1 : -1) * $diff->days;
+    }
+
     /**
      * @param string|DateTimeInterface|int|null $date1
      * @param string|DateTimeInterface|int|null $date2
