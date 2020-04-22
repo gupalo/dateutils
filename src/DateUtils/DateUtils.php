@@ -290,8 +290,8 @@ class DateUtils
 
     public static function diffDays($date1, $date2): int
     {
-        $date1 = self::create($date1);
-        $date2 = self::create($date2);
+        $date1 = self::dayBegin($date1);
+        $date2 = self::dayBegin($date2);
 
         $diff = $date1->diff($date2);
 
