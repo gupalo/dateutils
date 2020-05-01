@@ -32,7 +32,7 @@ class DateUtils
                 $result = new DateTime($date);
             }
         } catch (Throwable $e) {
-            $result = null;
+            $result = (new DateTime())->setTimestamp(0);
         }
 
         return $result;
@@ -82,11 +82,11 @@ class DateUtils
     }
 
     /**
-     * @param DateTimeInterface $minDate
-     * @param DateTimeInterface $maxDate
+     * @param string|DateTimeInterface|int|null $minDate
+     * @param string|DateTimeInterface|int|null $maxDate
      * @return DatePeriod|DateTime[]|null
      */
-    public static function dailyPeriod(DateTimeInterface $minDate, DateTimeInterface $maxDate): ?DatePeriod
+    public static function dailyPeriod($minDate, $maxDate): ?DatePeriod
     {
         try {
             $result = new DatePeriod(
@@ -101,18 +101,22 @@ class DateUtils
         return $result;
     }
 
-    public static function dailyPeriodTemplate(
-        DateTimeInterface $minDate,
-        DateTimeInterface $maxDate,
-        $template,
-        $format = self::FORMAT_SHORT
-    ): array {
+    /**
+     * @param string|DateTimeInterface|int|null $minDate
+     * @param string|DateTimeInterface|int|null $maxDate
+     * @param array|callable|string|int|null $template
+     * @param string $format
+     * @return DatePeriod|DateTime[]|null
+     */
+    public static function dailyPeriodTemplate($minDate, $maxDate, $template = [], $format = self::FORMAT_SHORT): array
+    {
         $result = [];
 
         $dates = self::dailyPeriod($minDate, $maxDate);
+        $isCallable = is_callable($template);
         foreach ($dates as $date) {
-            $item = $template;
-            if (array_key_exists('date', $item)) {
+            $item = $isCallable ? $template($date) : $template;
+            if (is_array($item) && array_key_exists('date', $item)) {
                 $item['date'] = $date->format($format);
             }
             $result[$date->format($format)] = $item;

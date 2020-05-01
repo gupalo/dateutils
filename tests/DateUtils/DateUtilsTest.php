@@ -2,6 +2,8 @@
 
 namespace Gupalo\Tests\DateUtils;
 
+use DateTime;
+use DateTimeImmutable;
 use Gupalo\DateUtils\DateUtils;
 use PHPUnit\Framework\TestCase;
 
@@ -9,10 +11,16 @@ class DateUtilsTest extends TestCase
 {
     public function testCreate(): void
     {
-        $date = DateUtils::now();
-        $this->assertSame(time(), $date->getTimestamp());
+        $this->assertEqualsWithDelta(time(), DateUtils::now()->getTimestamp(), 1);
 
         $this->assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::create('2019-10-17 12:34:56')->getTimestamp());
+        $this->assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::create(new DateTime('2019-10-17 12:34:56'))->getTimestamp());
+        $this->assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::create(new DateTimeImmutable('2019-10-17 12:34:56'))->getTimestamp());
+    }
+
+    public function testCreateError(): void
+    {
+        $this->assertSame(0, DateUtils::create('INVALID_DATE')->getTimestamp());
     }
 
     public function testFormat(): void
@@ -65,6 +73,28 @@ class DateUtilsTest extends TestCase
                 'date' => DateUtils::subDays(0)->format(DateUtils::FORMAT_SHORT),
                 'aaa' => 'bbb',
             ],
+        ];
+        $this->assertSame($result, $period);
+    }
+
+    public function testDailyPeriodTemplate_NotArray(): void
+    {
+        $period = DateUtils::dailyPeriodTemplate(DateUtils::subDays(1), DateUtils::now(), fn($date) => ['d' => DateUtils::formatShort($date), 'q' => 7]);
+
+        $result = [
+            DateUtils::subDays(1)->format(DateUtils::FORMAT_SHORT) => ['d' => DateUtils::subDays(1)->format(DateUtils::FORMAT_SHORT), 'q' => 7],
+            DateUtils::subDays(0)->format(DateUtils::FORMAT_SHORT) => ['d' => DateUtils::subDays(0)->format(DateUtils::FORMAT_SHORT), 'q' => 7],
+        ];
+        $this->assertSame($result, $period);
+    }
+
+    public function testDailyPeriodTemplate_Callable(): void
+    {
+        $period = DateUtils::dailyPeriodTemplate(DateUtils::subDays(1), DateUtils::now(), 5);
+
+        $result = [
+            DateUtils::subDays(1)->format(DateUtils::FORMAT_SHORT) => 5,
+            DateUtils::subDays(0)->format(DateUtils::FORMAT_SHORT) => 5,
         ];
         $this->assertSame($result, $period);
     }
