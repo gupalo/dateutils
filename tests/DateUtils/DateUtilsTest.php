@@ -189,6 +189,36 @@ class DateUtilsTest extends TestCase
         $this->assertSame(date('Y-m-d 00:00:00'), $date->format('Y-m-d H:i:s'));
     }
 
+    public function testTodayEnd(): void
+    {
+        $date = DateUtils::todayEnd();
+        $this->assertSame(date('Y-m-d 23:59:59'), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testYesterday(): void
+    {
+        $date = DateUtils::yesterday();
+        $this->assertSame(date('Y-m-d 00:00:00', strtotime('yesterday')), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testYesterdayEnd(): void
+    {
+        $date = DateUtils::yesterdayEnd();
+        $this->assertSame(date('Y-m-d 23:59:59', strtotime('yesterday')), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testTomorrow(): void
+    {
+        $date = DateUtils::tomorrow();
+        $this->assertSame(date('Y-m-d 00:00:00', strtotime('tomorrow')), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testTomorrowEnd(): void
+    {
+        $date = DateUtils::tomorrowEnd();
+        $this->assertSame(date('Y-m-d 23:59:59', strtotime('tomorrow')), $date->format('Y-m-d H:i:s'));
+    }
+
     public function testPercentHourPassed(): void
     {
         $date = DateUtils::today()->setTime(19, 30, 00);

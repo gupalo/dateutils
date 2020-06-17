@@ -281,6 +281,31 @@ class DateUtils
         return self::dayBegin();
     }
 
+    public static function todayEnd(): DateTime
+    {
+        return self::dayEnd();
+    }
+
+    public static function yesterday(): DateTime
+    {
+        return self::dayBegin(self::subDays(1));
+    }
+
+    public static function yesterdayEnd(): DateTime
+    {
+        return self::dayEnd(self::subDays(1));
+    }
+
+    public static function tomorrow(): DateTime
+    {
+        return self::dayBegin(self::addDays(1));
+    }
+
+    public static function tomorrowEnd(): DateTime
+    {
+        return self::dayEnd(self::addDays(1));
+    }
+
     /**
      * @param string|DateTimeInterface|int|null $date
      * @return float
