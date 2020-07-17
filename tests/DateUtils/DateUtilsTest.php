@@ -58,6 +58,13 @@ class DateUtilsTest extends TestCase
         self::assertSame(4, $counter);
     }
 
+    public function testDailyPeriod_Error(): void
+    {
+        $period = DateUtils::dailyPeriod(null, null, 'INVALID_SPEC');
+
+        self::assertNull($period);
+    }
+
     public function testDailyPeriodTemplate(): void
     {
         $period = DateUtils::dailyPeriodTemplate(DateUtils::subDays(3), DateUtils::now(), ['date' => null, 'aaa' => 'bbb']);
@@ -159,10 +166,22 @@ class DateUtilsTest extends TestCase
         self::assertSame(time() + 20 * 60, $date->getTimestamp());
     }
 
+    public function testAddMinutes_InvalidValueAndUseTimestamp(): void
+    {
+        $date = DateUtils::addMinutes(-20);
+        self::assertSame(time() - 20 * 60, $date->getTimestamp());
+    }
+
     public function testSubMinutes(): void
     {
         $date = DateUtils::subMinutes(20);
         self::assertSame(time() - 20 * 60, $date->getTimestamp());
+    }
+
+    public function testSubMinutes_InvalidValueAndUseTimestamp(): void
+    {
+        $date = DateUtils::subMinutes(-20);
+        self::assertSame(time() + 20 * 60, $date->getTimestamp());
     }
 
     public function testWeekBegin(): void
@@ -187,6 +206,12 @@ class DateUtilsTest extends TestCase
     {
         $date = DateUtils::hourBegin(DateUtils::now());
         self::assertSame(date('Y-m-d H:00:00'), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testHourEnd(): void
+    {
+        $date = DateUtils::hourEnd(DateUtils::now());
+        self::assertSame(date('Y-m-d H:59:59'), $date->format('Y-m-d H:i:s'));
     }
 
     public function testToday(): void

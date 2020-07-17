@@ -93,16 +93,13 @@ class DateUtils
     /**
      * @param string|DateTimeInterface|int|null $minDate
      * @param string|DateTimeInterface|int|null $maxDate
+     * @param string $intervalSpec
      * @return DatePeriod|DateTime[]|null
      */
-    public static function dailyPeriod($minDate, $maxDate): ?DatePeriod
+    public static function dailyPeriod($minDate, $maxDate, string $intervalSpec = 'P1D'): ?DatePeriod
     {
         try {
-            $result = new DatePeriod(
-                self::dayBegin($minDate),
-                new DateInterval('P1D'),
-                self::dayEnd($maxDate)
-            );
+            $result = new DatePeriod(self::dayBegin($minDate), new DateInterval($intervalSpec), self::dayEnd($maxDate));
         } catch (Throwable $e) {
             $result = null;
         }
@@ -148,11 +145,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->add(new DateInterval(sprintf('P%sD', $countDays)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() + $countDays * 86400);
-        }
+        self::addInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
 
         return $date;
     }
@@ -166,11 +159,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->sub(new DateInterval(sprintf('P%sD', $countDays)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countDays * 86400);
-        }
+        self::subInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
 
         return $date;
     }
@@ -184,11 +173,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->add(new DateInterval(sprintf('PT%sH', $countHours)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countHours * 60);
-        }
+        self::addInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
 
         return $date;
     }
@@ -202,11 +187,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->sub(new DateInterval(sprintf('PT%sH', $countHours)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countHours * 60);
-        }
+        self::subInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
 
         return $date;
     }
@@ -220,11 +201,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->add(new DateInterval(sprintf('PT%sM', $countMintutes)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() + $countMintutes * 60);
-        }
+        self::addInterval($date, sprintf('PT%sM', $countMintutes),  $countMintutes * 60);
 
         return $date;
     }
@@ -238,11 +215,7 @@ class DateUtils
     {
         $date = self::create($date);
 
-        try {
-            $date->sub(new DateInterval(sprintf('PT%sM', $countMintutes)));
-        } catch (Throwable $e) {
-            $date->setTimestamp($date->getTimestamp() - $countMintutes * 60);
-        }
+        self::subInterval($date, sprintf('PT%sM', $countMintutes),  $countMintutes * 60);
 
         return $date;
     }
@@ -283,6 +256,17 @@ class DateUtils
         $date = self::create($date);
 
         return self::create($date->format('Y-m-d H:00:00'));
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTime
+     */
+    public static function hourEnd($date = null): DateTime
+    {
+        $date = self::create($date);
+
+        return self::create($date->format('Y-m-d H:59:59'));
     }
 
     public static function today(): DateTime
@@ -370,5 +354,23 @@ class DateUtils
         }
 
         return ($days - $weekDay1 + $weekDay2) / 7;
+    }
+
+    private static function addInterval(DateTimeInterface $date, string $intervalSpec, int $seconds): void
+    {
+        try {
+            $date->add(new DateInterval($intervalSpec));
+        } catch (Throwable $e) {
+            $date->setTimestamp($date->getTimestamp() + $seconds);
+        }
+    }
+
+    private static function subInterval(DateTimeInterface $date, string $intervalSpec, int $seconds): void
+    {
+        try {
+            $date->sub(new DateInterval($intervalSpec));
+        } catch (Throwable $e) {
+            $date->setTimestamp($date->getTimestamp() - $seconds);
+        }
     }
 }
