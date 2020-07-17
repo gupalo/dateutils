@@ -59,11 +59,32 @@ class DateUtils
 
     /**
      * @param string|DateTimeInterface|int|null $date
+     * @param string|null $default
+     * @param string $format
+     * @return string
+     */
+    public static function formatNull($date = null, ?string $default = null, string $format = self::FORMAT_FULL): ?string
+    {
+        return ($date === null) ? $default : self::format($date, $format);
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
      * @return string
      */
     public static function formatShort($date = null): string
     {
         return self::create($date)->format(self::FORMAT_SHORT);
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @param string|null $default
+     * @return string
+     */
+    public static function formatShortNull($date = null, ?string $default = null): ?string
+    {
+        return ($date === null) ? $default : self::formatShort($date);
     }
 
     /**

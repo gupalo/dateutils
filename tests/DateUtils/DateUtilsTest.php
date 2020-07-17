@@ -32,12 +32,25 @@ class DateUtilsTest extends TestCase
     public function testFormat(): void
     {
         self::assertSame(date('Y-m-d H:i:s'), DateUtils::format());
-
     }
 
-    public function testFormatFull(): void
+    public function testFormatNull(): void
+    {
+        self::assertNull(DateUtils::formatNull(null));
+        self::assertSame('-', DateUtils::formatNull(null, '-'));
+        self::assertSame('2020-01-02 03:04:05', DateUtils::formatNull('2020-01-02 03:04:05'));
+    }
+
+    public function testFormatShort(): void
     {
         self::assertSame(date('Y-m-d'), DateUtils::formatShort());
+    }
+
+    public function testFormatShortNull(): void
+    {
+        self::assertNull(DateUtils::formatShortNull(null));
+        self::assertSame('-', DateUtils::formatShortNull(null, '-'));
+        self::assertSame('2020-01-02', DateUtils::formatShortNull('2020-01-02 03:04:05'));
     }
 
     public function testNow(): void
