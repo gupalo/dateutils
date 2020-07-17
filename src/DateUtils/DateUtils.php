@@ -40,6 +40,15 @@ class DateUtils
 
     /**
      * @param string|DateTimeInterface|int|null $date
+     * @return ?DateTime
+     */
+    public static function createNull($date): ?DateTime
+    {
+        return ($date !== null) ? self::create($date) : null;
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
      * @param string $format
      * @return string
      */

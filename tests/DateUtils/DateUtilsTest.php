@@ -18,6 +18,12 @@ class DateUtilsTest extends TestCase
         self::assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::create(new DateTimeImmutable('2019-10-17 12:34:56'))->getTimestamp());
     }
 
+    public function testCreateNull(): void
+    {
+        self::assertSame(strtotime('2019-10-17 12:34:56'), DateUtils::createNull('2019-10-17 12:34:56')->getTimestamp());
+        self::assertNull(DateUtils::createNull(null));
+    }
+
     public function testCreateError(): void
     {
         self::assertSame(0, DateUtils::create('INVALID_DATE')->getTimestamp());
