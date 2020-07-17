@@ -131,10 +131,22 @@ class DateUtilsTest extends TestCase
         self::assertSame(date('Y-m-d 00:00:00'), $date->format('Y-m-d H:i:s'));
     }
 
+    public function testDayBeginNull(): void
+    {
+        self::assertSame(date('Y-m-d 00:00:00'), DateUtils::dayBeginNull(DateUtils::now())->format('Y-m-d H:i:s'));
+        self::assertNull(DateUtils::dayBeginNull(null));
+    }
+
     public function testDayEnd(): void
     {
         $date = DateUtils::dayEnd(DateUtils::now());
         self::assertSame(date('Y-m-d 23:59:59'), $date->format('Y-m-d H:i:s'));
+    }
+
+    public function testDayEndNull(): void
+    {
+        self::assertSame(date('Y-m-d 23:59:59'), DateUtils::dayEndNull(DateUtils::now())->format('Y-m-d H:i:s'));
+        self::assertNull(DateUtils::dayEndNull(null));
     }
 
     public function testDaysAgo(): void

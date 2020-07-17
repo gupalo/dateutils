@@ -61,7 +61,7 @@ class DateUtils
      * @param string|DateTimeInterface|int|null $date
      * @param string|null $default
      * @param string $format
-     * @return string
+     * @return ?string
      */
     public static function formatNull($date = null, ?string $default = null, string $format = self::FORMAT_FULL): ?string
     {
@@ -80,7 +80,7 @@ class DateUtils
     /**
      * @param string|DateTimeInterface|int|null $date
      * @param string|null $default
-     * @return string
+     * @return ?string
      */
     public static function formatShortNull($date = null, ?string $default = null): ?string
     {
@@ -101,6 +101,15 @@ class DateUtils
 
     /**
      * @param string|DateTimeInterface|int|null $date
+     * @return ?DateTime
+     */
+    public static function dayBeginNull($date = null): ?DateTime
+    {
+        return ($date === null) ? null : self::dayBegin($date);
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
     public static function dayEnd($date = null): DateTime
@@ -109,6 +118,15 @@ class DateUtils
         $result->setTime(23, 59, 59);
 
         return $result;
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return ?DateTime
+     */
+    public static function dayEndNull($date = null): ?DateTime
+    {
+        return ($date === null) ? null : self::dayEnd($date);
     }
 
     /**
