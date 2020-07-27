@@ -320,4 +320,20 @@ class DateUtilsTest extends TestCase
         self::assertSame(date('Y-m-d'), DateUtils::now()->format(DateUtils::FORMAT_SHORT));
         self::assertSame(date('Y-m-d H:i:s'), DateUtils::now()->format(DateUtils::FORMAT_FULL));
     }
+
+    public function testTime(): void
+    {
+        self::assertEqualsWithDelta(time(), DateUtils::time(), 2);
+        self::assertEqualsWithDelta(time(), DateUtils::time(null), 2);
+        self::assertSame((new DateTime('2020-01-01 01:02:03'))->getTimestamp(), DateUtils::time('2020-01-01 01:02:03'));
+    }
+
+    public function testTimeNull(): void
+    {
+        self::assertNull(DateUtils::timeNull());
+        self::assertNull(DateUtils::timeNull(null));
+
+        self::assertEqualsWithDelta(time(), DateUtils::timeNull('now'), 2);
+        self::assertSame((new DateTime('2020-01-01 01:02:03'))->getTimestamp(), DateUtils::timeNull('2020-01-01 01:02:03'));
+    }
 }

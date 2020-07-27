@@ -412,4 +412,22 @@ class DateUtils
             $date->setTimestamp($date->getTimestamp() - $seconds);
         }
     }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return int
+     */
+    public static function time($date = null): int
+    {
+        return self::create($date)->getTimestamp();
+    }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date
+     * @return ?int
+     */
+    public static function timeNull($date = null): ?int
+    {
+        return ($date !== null) ? self::create($date)->getTimestamp() : null;
+    }
 }
