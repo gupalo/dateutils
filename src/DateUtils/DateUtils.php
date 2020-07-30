@@ -430,4 +430,18 @@ class DateUtils
     {
         return ($date !== null) ? self::create($date)->getTimestamp() : null;
     }
+
+    /**
+     * @param string|DateTimeInterface|int|null $date1
+     * @param string|DateTimeInterface|int|null $date2
+     * @return bool
+     */
+    public static function isSameDay($date1, $date2): bool
+    {
+        return (
+            $date1 !== null &&
+            $date2 !== null &&
+            self::formatShort($date1) === self::formatShort($date2)
+        );
+    }
 }

@@ -336,4 +336,14 @@ class DateUtilsTest extends TestCase
         self::assertEqualsWithDelta(time(), DateUtils::timeNull('now'), 2);
         self::assertSame((new DateTime('2020-01-01 01:02:03'))->getTimestamp(), DateUtils::timeNull('2020-01-01 01:02:03'));
     }
+
+    public function testIsSameDay(): void
+    {
+        self::assertTrue(DateUtils::isSameDay('2020-01-01', '2020-01-01'));
+        self::assertTrue(DateUtils::isSameDay('2020-01-01 00:00:00', '2020-01-01 22:00:01'));
+
+        self::assertFalse(DateUtils::isSameDay(null, null));
+        self::assertFalse(DateUtils::isSameDay(null, '2020-01-01'));
+        self::assertFalse(DateUtils::isSameDay('2020-01-01', null));
+    }
 }
