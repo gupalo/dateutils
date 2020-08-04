@@ -151,7 +151,7 @@ class DateUtils
      * @param string|DateTimeInterface|int|null $maxDate
      * @param array|callable|string|int|null $template
      * @param string $format
-     * @return DatePeriod|DateTime[]|null
+     * @return array
      */
     public static function dailyPeriodTemplate($minDate, $maxDate, $template = [], $format = self::FORMAT_SHORT): array
     {
