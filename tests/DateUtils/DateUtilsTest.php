@@ -155,6 +155,12 @@ class DateUtilsTest extends TestCase
         self::assertSame(time() - 2 * 86400, $date->getTimestamp());
     }
 
+    public function testDaysAgoFloat(): void
+    {
+        $date = DateUtils::subDaysFloat(0.5);
+        self::assertSame((int)(time() - 0.5 * 86400), $date->getTimestamp());
+    }
+
     public function testMinutesAgo(): void
     {
         $date = DateUtils::subMinutes(20);

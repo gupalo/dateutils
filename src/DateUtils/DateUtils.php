@@ -204,6 +204,20 @@ class DateUtils
     }
 
     /**
+     * @param float $countDays
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTime
+     */
+    public static function subDaysFloat(float $countDays, $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        self::subInterval($date, sprintf('P%sD', $countDays), (int)($countDays * 86400));
+
+        return $date;
+    }
+
+    /**
      * @param int $countHours
      * @param string|DateTimeInterface|int|null $date
      * @return DateTime
