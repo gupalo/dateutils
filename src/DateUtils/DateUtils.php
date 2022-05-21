@@ -274,6 +274,34 @@ class DateUtils
     }
 
     /**
+     * @param int $countSeconds
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTime
+     */
+    public static function addSeconds(int $countSeconds, $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        $date->setTimestamp($date->getTimestamp() + $countSeconds);
+
+        return $date;
+    }
+
+    /**
+     * @param int $countSeconds
+     * @param string|DateTimeInterface|int|null $date
+     * @return DateTime
+     */
+    public static function subSeconds(int $countSeconds, $date = null): DateTime
+    {
+        $date = self::create($date);
+
+        $date->setTimestamp($date->getTimestamp() - $countSeconds);
+
+        return $date;
+    }
+
+    /**
      * @param string|DateTimeInterface|int|null $date
      * @return DateTimeInterface
      */

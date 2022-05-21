@@ -215,6 +215,30 @@ class DateUtilsTest extends TestCase
         self::assertSame(time() + 20 * 60, $date->getTimestamp());
     }
 
+    public function testAddSeconds(): void
+    {
+        $date = DateUtils::addSeconds(20);
+        self::assertSame(time() + 20, $date->getTimestamp());
+    }
+
+    public function testAddSeconds_InvalidValueAndUseTimestamp(): void
+    {
+        $date = DateUtils::addSeconds(-20);
+        self::assertSame(time() - 20, $date->getTimestamp());
+    }
+
+    public function testSubSeconds(): void
+    {
+        $date = DateUtils::subSeconds(20);
+        self::assertSame(time() - 20, $date->getTimestamp());
+    }
+
+    public function testSubSeconds_InvalidValueAndUseTimestamp(): void
+    {
+        $date = DateUtils::subSeconds(-20);
+        self::assertSame(time() + 20, $date->getTimestamp());
+    }
+
     public function testWeekBegin(): void
     {
         $date = DateUtils::weekBegin('2020-04-16 12:34:56');
