@@ -4,37 +4,37 @@ namespace Gupalo\DateUtils;
 
 use DateInterval;
 use DatePeriod;
-use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Throwable;
 
-class DateUtils
+class Dat
 {
     public const string FORMAT_SHORT = 'Y-m-d';
     public const string FORMAT_FULL = 'Y-m-d H:i:s';
 
-    public static function create(DateTimeInterface|int|string|null $date = 'now'): DateTime
+    public static function create(DateTimeInterface|int|string|null $date = 'now'): DateTimeImmutable
     {
         try {
             if ($date === null) {
-                $result = new DateTime();
-            } elseif ($date instanceof DateTime) {
-                $result = clone $date;
+                $result = new DateTimeImmutable();
+            } elseif ($date instanceof \DateTime) {
+                $result = DateTimeImmutable::createFromMutable($date);
             } elseif ($date instanceof DateTimeInterface) {
-                $result = (new DateTime())->setTimestamp($date->getTimestamp());
+                $result = DateTimeImmutable::createFromInterface($date);
             } elseif (is_int($date)) {
-                $result = (new DateTime())->setTimestamp($date);
+                $result = (new DateTimeImmutable())->setTimestamp($date);
             } else {
-                $result = new DateTime($date);
+                $result = new DateTimeImmutable($date);
             }
         } catch (Throwable) {
-            $result = (new DateTime())->setTimestamp(0);
+            $result = (new DateTimeImmutable())->setTimestamp(0);
         }
 
         return $result;
     }
 
-    public static function createNull(DateTimeInterface|int|string|null $date): ?DateTime
+    public static function createNull(DateTimeInterface|int|string|null $date): ?DateTimeImmutable
     {
         return ($date !== null) ? self::create($date) : null;
     }
@@ -63,34 +63,28 @@ class DateUtils
         return ($date === null) ? $default : self::formatShort($date);
     }
 
-    public static function dayBegin(DateTimeInterface|int|string $date = null): DateTime
+    public static function dayBegin(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
-        $result = self::create($date);
-        $result->setTime(0, 0);
-
-        return $result;
+        return self::create($date)->setTime(0, 0);
     }
 
-    public static function dayBeginNull(DateTimeInterface|int|string $date = null): ?DateTime
+    public static function dayBeginNull(DateTimeInterface|int|string $date = null): ?DateTimeImmutable
     {
         return ($date === null) ? null : self::dayBegin($date);
     }
 
-    public static function dayEnd(DateTimeInterface|int|string $date = null): DateTime
+    public static function dayEnd(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
-        $result = self::create($date);
-        $result->setTime(23, 59, 59);
-
-        return $result;
+        return self::create($date)->setTime(23, 59, 59);
     }
 
-    public static function dayEndNull(DateTimeInterface|int|string $date = null): ?DateTime
+    public static function dayEndNull(DateTimeInterface|int|string $date = null): ?DateTimeImmutable
     {
         return ($date === null) ? null : self::dayEnd($date);
     }
 
     /**
-     * @return DatePeriod|DateTime[]|null
+     * @return DatePeriod|DateTimeImmutable[]|null
      * @noinspection PhpDocSignatureInspection
      */
     public static function dailyPeriod(
@@ -108,6 +102,7 @@ class DateUtils
         return $result;
     }
 
+    /** @noinspection DuplicatedCode */
     public static function dailyPeriodTemplate(
         DateTimeInterface|int|string|null $minDate,
         DateTimeInterface|int|string|null $maxDate,
@@ -130,147 +125,115 @@ class DateUtils
         return $result;
     }
 
-    public static function now(): DateTime
+    public static function now(): DateTimeImmutable
     {
         return self::create();
     }
 
-    public static function addDays(int $countDays, DateTimeInterface|int|string $date = null): DateTime
+    public static function addDays(int $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::addInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
+    }
+
+    public static function subDays(int $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::subInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
+    }
+
+    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::subInterval($date, sprintf('P%sD', $countDays), (int)($countDays * 86400));
+    }
+
+    public static function addHours(int $countHours, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::addInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
+    }
+
+    public static function subHours(int $countHours, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::subInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
+    }
+
+    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::addInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
+    }
+
+    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    {
+        return self::subInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
+    }
+
+    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
-        self::addInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
-
-        return $date;
+        return $date->setTimestamp($date->getTimestamp() + $countSeconds);
     }
 
-    public static function subDays(int $countDays, DateTimeInterface|int|string $date = null): DateTime
+    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
-        self::subInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
-
-        return $date;
+        return $date->setTimestamp($date->getTimestamp() - $countSeconds);
     }
 
-    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        self::subInterval($date, sprintf('P%sD', $countDays), (int)($countDays * 86400));
-
-        return $date;
-    }
-
-    public static function addHours(int $countHours, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        self::addInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
-
-        return $date;
-    }
-
-    public static function subHours(int $countHours, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        self::subInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
-
-        return $date;
-    }
-
-    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        self::addInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
-
-        return $date;
-    }
-
-    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        self::subInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
-
-        return $date;
-    }
-
-    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        $date->setTimestamp($date->getTimestamp() + $countSeconds);
-
-        return $date;
-    }
-
-    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTime
-    {
-        $date = self::create($date);
-
-        $date->setTimestamp($date->getTimestamp() - $countSeconds);
-
-        return $date;
-    }
-
-    public static function weekBegin(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function weekBegin(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         return self::dayBegin(strtotime('monday this week', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function weekEnd(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function weekEnd(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         return self::dayEnd(strtotime('sunday this week', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function nextMonday(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function nextMonday(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         return self::dayBegin(strtotime('next monday', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function hourBegin(DateTimeInterface|int|string $date = null): DateTime
+    public static function hourBegin(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
         return self::create($date->format('Y-m-d H:00:00'));
     }
 
-    public static function hourEnd(DateTimeInterface|int|string $date = null): DateTime
+    public static function hourEnd(DateTimeInterface|int|string $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
         return self::create($date->format('Y-m-d H:59:59'));
     }
 
-    public static function today(): DateTime
+    public static function today(): DateTimeImmutable
     {
         return self::dayBegin();
     }
 
-    public static function todayEnd(): DateTime
+    public static function todayEnd(): DateTimeImmutable
     {
         return self::dayEnd();
     }
 
-    public static function yesterday(): DateTime
+    public static function yesterday(): DateTimeImmutable
     {
         return self::dayBegin(self::subDays(1));
     }
 
-    public static function yesterdayEnd(): DateTime
+    public static function yesterdayEnd(): DateTimeImmutable
     {
         return self::dayEnd(self::subDays(1));
     }
 
-    public static function tomorrow(): DateTime
+    public static function tomorrow(): DateTimeImmutable
     {
         return self::dayBegin(self::addDays(1));
     }
 
-    public static function tomorrowEnd(): DateTime
+    public static function tomorrowEnd(): DateTimeImmutable
     {
         return self::dayEnd(self::addDays(1));
     }
@@ -324,22 +287,30 @@ class DateUtils
         return ($days - $weekDay1 + $weekDay2) / 7;
     }
 
-    private static function addInterval(DateTimeInterface $date, string $intervalSpec, int $seconds): void
+    private static function addInterval(DateTimeInterface|int|string|null $date, string $intervalSpec, int $seconds): DateTimeImmutable
     {
+        $d = self::create($date);
+
         try {
-            $date->add(new DateInterval($intervalSpec));
+            $d = $d->add(new DateInterval($intervalSpec));
         } catch (Throwable) {
-            $date->setTimestamp($date->getTimestamp() + $seconds);
+            $d = $d->setTimestamp($d->getTimestamp() + $seconds);
         }
+
+        return $d;
     }
 
-    private static function subInterval(DateTimeInterface $date, string $intervalSpec, int $seconds): void
+    private static function subInterval(DateTimeInterface|int|string|null $date, string $intervalSpec, int $seconds): DateTimeImmutable
     {
+        $d = self::create($date);
+
         try {
-            $date->sub(new DateInterval($intervalSpec));
+            $d = $d->sub(new DateInterval($intervalSpec));
         } catch (Throwable) {
-            $date->setTimestamp($date->getTimestamp() - $seconds);
+            $d = $d->setTimestamp($d->getTimestamp() - $seconds);
         }
+
+        return $d;
     }
 
     public static function time(DateTimeInterface|int|string $date = null): int
