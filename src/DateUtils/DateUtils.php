@@ -153,7 +153,7 @@ class DateUtils
      * @param string $format
      * @return array
      */
-    public static function dailyPeriodTemplate($minDate, $maxDate, $template = [], $format = self::FORMAT_SHORT): array
+    public static function dailyPeriodTemplate($minDate, $maxDate, $template = [], string $format = self::FORMAT_SHORT): array
     {
         $result = [];
 
@@ -246,29 +246,29 @@ class DateUtils
     }
 
     /**
-     * @param int $countMintutes
+     * @param int $countMinutes
      * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
-    public static function addMinutes(int $countMintutes, $date = null): DateTime
+    public static function addMinutes(int $countMinutes, $date = null): DateTime
     {
         $date = self::create($date);
 
-        self::addInterval($date, sprintf('PT%sM', $countMintutes),  $countMintutes * 60);
+        self::addInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
 
         return $date;
     }
 
     /**
-     * @param int $countMintutes
+     * @param int $countMinutes
      * @param string|DateTimeInterface|int|null $date
      * @return DateTime
      */
-    public static function subMinutes(int $countMintutes, $date = null): DateTime
+    public static function subMinutes(int $countMinutes, $date = null): DateTime
     {
         $date = self::create($date);
 
-        self::subInterval($date, sprintf('PT%sM', $countMintutes),  $countMintutes * 60);
+        self::subInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
 
         return $date;
     }
@@ -384,7 +384,7 @@ class DateUtils
      * @param string|DateTimeInterface|int|null $date
      * @return float
      */
-    public static function percentHourPassed($date = null)
+    public static function percentHourPassed($date = null): float
     {
         $date = self::create($date);
 
