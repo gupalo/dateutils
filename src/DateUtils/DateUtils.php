@@ -39,7 +39,7 @@ class DateUtils
         return ($date !== null) ? self::create($date) : null;
     }
 
-    public static function format(DateTimeInterface|int|string $date = null, string $format = self::FORMAT_FULL): string
+    public static function format(DateTimeInterface|int|string|null $date = null, string $format = self::FORMAT_FULL): string
     {
         return self::create($date)->format($format);
     }
@@ -53,17 +53,17 @@ class DateUtils
         return ($date === null) ? $default : self::format($date, $format);
     }
 
-    public static function formatShort(DateTimeInterface|int|string $date = null): string
+    public static function formatShort(DateTimeInterface|int|string|null $date = null): string
     {
         return self::create($date)->format(self::FORMAT_SHORT);
     }
 
-    public static function formatShortNull(DateTimeInterface|int|string $date = null, ?string $default = null): ?string
+    public static function formatShortNull(DateTimeInterface|int|string|null $date = null, ?string $default = null): ?string
     {
         return ($date === null) ? $default : self::formatShort($date);
     }
 
-    public static function dayBegin(DateTimeInterface|int|string $date = null): DateTime
+    public static function dayBegin(DateTimeInterface|int|string|null $date = null): DateTime
     {
         $result = self::create($date);
         $result->setTime(0, 0);
@@ -71,12 +71,12 @@ class DateUtils
         return $result;
     }
 
-    public static function dayBeginNull(DateTimeInterface|int|string $date = null): ?DateTime
+    public static function dayBeginNull(DateTimeInterface|int|string|null $date = null): ?DateTime
     {
         return ($date === null) ? null : self::dayBegin($date);
     }
 
-    public static function dayEnd(DateTimeInterface|int|string $date = null): DateTime
+    public static function dayEnd(DateTimeInterface|int|string|null $date = null): DateTime
     {
         $result = self::create($date);
         $result->setTime(23, 59, 59);
@@ -84,7 +84,7 @@ class DateUtils
         return $result;
     }
 
-    public static function dayEndNull(DateTimeInterface|int|string $date = null): ?DateTime
+    public static function dayEndNull(DateTimeInterface|int|string|null $date = null): ?DateTime
     {
         return ($date === null) ? null : self::dayEnd($date);
     }
@@ -216,29 +216,29 @@ class DateUtils
         return $date;
     }
 
-    public static function weekBegin(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function weekBegin(DateTimeInterface|int|string|null $date = null): DateTimeInterface
     {
         return self::dayBegin(strtotime('monday this week', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function weekEnd(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function weekEnd(DateTimeInterface|int|string|null $date = null): DateTimeInterface
     {
         return self::dayEnd(strtotime('sunday this week', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function nextMonday(DateTimeInterface|int|string $date = null): DateTimeInterface
+    public static function nextMonday(DateTimeInterface|int|string|null $date = null): DateTimeInterface
     {
         return self::dayBegin(strtotime('next monday', self::dayBegin($date)->getTimestamp()));
     }
 
-    public static function hourBegin(DateTimeInterface|int|string $date = null): DateTime
+    public static function hourBegin(DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
         return self::create($date->format('Y-m-d H:00:00'));
     }
 
-    public static function hourEnd(DateTimeInterface|int|string $date = null): DateTime
+    public static function hourEnd(DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -275,7 +275,7 @@ class DateUtils
         return self::dayEnd(self::addDays(1));
     }
 
-    public static function percentHourPassed(DateTimeInterface|int|string $date = null): float
+    public static function percentHourPassed(DateTimeInterface|int|string|null $date = null): float
     {
         $date = self::create($date);
 
@@ -342,12 +342,12 @@ class DateUtils
         }
     }
 
-    public static function time(DateTimeInterface|int|string $date = null): int
+    public static function time(DateTimeInterface|int|string|null $date = null): int
     {
         return self::create($date)->getTimestamp();
     }
 
-    public static function timeNull(DateTimeInterface|int|string $date = null): ?int
+    public static function timeNull(DateTimeInterface|int|string|null $date = null): ?int
     {
         return ($date !== null) ? self::create($date)->getTimestamp() : null;
     }
