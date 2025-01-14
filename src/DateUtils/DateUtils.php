@@ -17,21 +17,25 @@ class DateUtils
     {
         try {
             if ($date === null) {
-                $result = new DateTime();
-            } elseif ($date instanceof DateTime) {
-                $result = clone $date;
-            } elseif ($date instanceof DateTimeInterface) {
-                $result = (new DateTime())->setTimestamp($date->getTimestamp());
-            } elseif (is_int($date)) {
-                $result = (new DateTime())->setTimestamp($date);
-            } else {
-                $result = new DateTime($date);
+                return new DateTime();
             }
-        } catch (Throwable) {
-            $result = (new DateTime())->setTimestamp(0);
-        }
 
-        return $result;
+            if ($date instanceof DateTime) {
+                return clone $date;
+            }
+
+            if ($date instanceof DateTimeInterface) {
+                return (new DateTime())->setTimestamp($date->getTimestamp());
+            }
+
+            if (is_int($date)) {
+                return (new DateTime())->setTimestamp($date);
+            }
+
+            return new DateTime($date);
+        } catch (Throwable) {
+            return (new DateTime())->setTimestamp(0);
+        }
     }
 
     public static function createNull(DateTimeInterface|int|string|null $date): ?DateTime

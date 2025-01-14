@@ -17,21 +17,25 @@ class Dat
     {
         try {
             if ($date === null) {
-                $result = new DateTimeImmutable();
-            } elseif ($date instanceof \DateTime) {
-                $result = DateTimeImmutable::createFromMutable($date);
-            } elseif ($date instanceof DateTimeInterface) {
-                $result = DateTimeImmutable::createFromInterface($date);
-            } elseif (is_int($date)) {
-                $result = (new DateTimeImmutable())->setTimestamp($date);
-            } else {
-                $result = new DateTimeImmutable($date);
+                return new DateTimeImmutable();
             }
-        } catch (Throwable) {
-            $result = (new DateTimeImmutable())->setTimestamp(0);
-        }
 
-        return $result;
+            if ($date instanceof \DateTime) {
+                return DateTimeImmutable::createFromMutable($date);
+            }
+
+            if ($date instanceof DateTimeInterface) {
+                return DateTimeImmutable::createFromInterface($date);
+            }
+
+            if (is_int($date)) {
+                return (new DateTimeImmutable())->setTimestamp($date);
+            }
+
+            return new DateTimeImmutable($date);
+        } catch (Throwable) {
+            return (new DateTimeImmutable())->setTimestamp(0);
+        }
     }
 
     public static function createNull(DateTimeInterface|int|string|null $date): ?DateTimeImmutable
