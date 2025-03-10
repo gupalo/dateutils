@@ -376,4 +376,13 @@ class DatTest extends TestCase
         self::assertFalse(Dat::isSameDay(null, '2020-01-01'));
         self::assertFalse(Dat::isSameDay('2020-01-01', null));
     }
+
+    public function testConstSeconds(): void
+    {
+        self::assertSame(Dat::SECONDS_HOUR, 60 * 60);
+        self::assertSame(Dat::SECONDS_DAY, 60 * 60 * 24);
+        self::assertSame(Dat::SECONDS_7_DAYS, 60 * 60 * 24 * 7);
+        self::assertSame(Dat::SECONDS_30_DAYS, 60 * 60 * 24 * 30);
+        self::assertSame(Dat::SECONDS_360_DAYS, 60 * 60 * 24 * 360);
+    }
 }
