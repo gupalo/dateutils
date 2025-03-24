@@ -10,8 +10,9 @@ use Throwable;
 
 class DateUtils
 {
-    public const string FORMAT_SHORT = 'Y-m-d';
-    public const string FORMAT_FULL = 'Y-m-d H:i:s';
+    // php 8.2 doesn't allow using const types
+    public const FORMAT_SHORT = 'Y-m-d';
+    public const FORMAT_FULL = 'Y-m-d H:i:s';
 
     public static function create(DateTimeInterface|int|string|null $date = 'now'): DateTime
     {

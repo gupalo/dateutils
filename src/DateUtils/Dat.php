@@ -10,14 +10,15 @@ use Throwable;
 
 class Dat
 {
-    public const string FORMAT_SHORT = 'Y-m-d';
-    public const string FORMAT_FULL = 'Y-m-d H:i:s';
+    // php 8.2 doesn't allow using const types
+    public const FORMAT_SHORT = 'Y-m-d';
+    public const FORMAT_FULL = 'Y-m-d H:i:s';
 
-    public const int SECONDS_HOUR = 3600;
-    public const int SECONDS_DAY = 86400;
-    public const int SECONDS_7_DAYS = 604800;
-    public const int SECONDS_30_DAYS = 2592000;
-    public const int SECONDS_360_DAYS = 31104000;
+    public const SECONDS_HOUR = 3600;
+    public const SECONDS_DAY = 86400;
+    public const SECONDS_7_DAYS = 604800;
+    public const SECONDS_30_DAYS = 2592000;
+    public const SECONDS_360_DAYS = 31104000;
 
     public static function create(DateTimeInterface|int|string|null $date = 'now'): DateTimeImmutable
     {

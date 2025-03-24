@@ -105,7 +105,7 @@ class DatTest extends TestCase
 
     public function testDailyPeriodTemplate_NotArray(): void
     {
-        $period = Dat::dailyPeriodTemplate(Dat::subDays(1), Dat::now(), fn($date) => ['d' => Dat::formatShort($date), 'q' => 7]);
+        $period = Dat::dailyPeriodTemplate(Dat::subDays(1), Dat::now(), static fn($date) => ['d' => Dat::formatShort($date), 'q' => 7]);
 
         $result = [
             Dat::subDays(1)->format(Dat::FORMAT_SHORT) => ['d' => Dat::subDays(1)->format(Dat::FORMAT_SHORT), 'q' => 7],

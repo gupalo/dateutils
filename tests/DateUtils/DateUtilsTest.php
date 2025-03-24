@@ -105,7 +105,7 @@ class DateUtilsTest extends TestCase
 
     public function testDailyPeriodTemplate_NotArray(): void
     {
-        $period = DateUtils::dailyPeriodTemplate(DateUtils::subDays(1), DateUtils::now(), fn($date) => ['d' => DateUtils::formatShort($date), 'q' => 7]);
+        $period = DateUtils::dailyPeriodTemplate(DateUtils::subDays(1), DateUtils::now(), static fn($date) => ['d' => DateUtils::formatShort($date), 'q' => 7]);
 
         $result = [
             DateUtils::subDays(1)->format(DateUtils::FORMAT_SHORT) => ['d' => DateUtils::subDays(1)->format(DateUtils::FORMAT_SHORT), 'q' => 7],
