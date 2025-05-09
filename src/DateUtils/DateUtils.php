@@ -50,7 +50,7 @@ class DateUtils
     }
 
     public static function formatNull(
-        DateTimeInterface|int|string $date = null,
+        DateTimeInterface|int|string|null $date = null,
         ?string $default = null,
         string $format = self::FORMAT_FULL,
     ): ?string
@@ -140,7 +140,7 @@ class DateUtils
         return self::create();
     }
 
-    public static function addDays(int $countDays, DateTimeInterface|int|string $date = null): DateTime
+    public static function addDays(int $countDays, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -149,7 +149,7 @@ class DateUtils
         return $date;
     }
 
-    public static function subDays(int $countDays, DateTimeInterface|int|string $date = null): DateTime
+    public static function subDays(int $countDays, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -158,7 +158,7 @@ class DateUtils
         return $date;
     }
 
-    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string $date = null): DateTime
+    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -167,7 +167,7 @@ class DateUtils
         return $date;
     }
 
-    public static function addHours(int $countHours, DateTimeInterface|int|string $date = null): DateTime
+    public static function addHours(int $countHours, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -176,7 +176,7 @@ class DateUtils
         return $date;
     }
 
-    public static function subHours(int $countHours, DateTimeInterface|int|string $date = null): DateTime
+    public static function subHours(int $countHours, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -185,7 +185,7 @@ class DateUtils
         return $date;
     }
 
-    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTime
+    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -194,7 +194,7 @@ class DateUtils
         return $date;
     }
 
-    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTime
+    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -203,7 +203,7 @@ class DateUtils
         return $date;
     }
 
-    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTime
+    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
@@ -212,7 +212,7 @@ class DateUtils
         return $date;
     }
 
-    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTime
+    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string|null $date = null): DateTime
     {
         $date = self::create($date);
 
