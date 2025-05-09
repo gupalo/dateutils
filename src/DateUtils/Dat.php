@@ -56,7 +56,7 @@ class Dat
     }
 
     public static function formatNull(
-        DateTimeInterface|int|string $date = null,
+        DateTimeInterface|int|string|null $date = null,
         ?string $default = null,
         string $format = self::FORMAT_FULL,
     ): ?string
@@ -141,49 +141,49 @@ class Dat
         return self::create();
     }
 
-    public static function addDays(int $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function addDays(int $countDays, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::addInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
     }
 
-    public static function subDays(int $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function subDays(int $countDays, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::subInterval($date, sprintf('P%sD', $countDays), $countDays * 86400);
     }
 
-    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function subDaysFloat(float $countDays, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::subInterval($date, sprintf('P%sD', $countDays), (int)($countDays * 86400));
     }
 
-    public static function addHours(int $countHours, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function addHours(int $countHours, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::addInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
     }
 
-    public static function subHours(int $countHours, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function subHours(int $countHours, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::subInterval($date, sprintf('PT%sH', $countHours),  $countHours * 3600);
     }
 
-    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function addMinutes(int $countMinutes, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::addInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
     }
 
-    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function subMinutes(int $countMinutes, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         return self::subInterval($date, sprintf('PT%sM', $countMinutes),  $countMinutes * 60);
     }
 
-    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function addSeconds(int $countSeconds, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
         return $date->setTimestamp($date->getTimestamp() + $countSeconds);
     }
 
-    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string $date = null): DateTimeImmutable
+    public static function subSeconds(int $countSeconds, DateTimeInterface|int|string|null $date = null): DateTimeImmutable
     {
         $date = self::create($date);
 
